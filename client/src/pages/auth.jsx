@@ -1,6 +1,8 @@
-import { useState } from "react"
+import { useState, useContext } from "react"
+import AuthContext from "../context/auth_context"
 
 export default function Auth() {
+  const { login } = useContext(AuthContext)
   const [tab, setTab] = useState("login")
   const [form, setForm] = useState({ username: "", password: "", confirmPassword: "" })
   const [error, setError] = useState("")
@@ -44,8 +46,7 @@ export default function Auth() {
         setError(data.error || "Something went wrong")
       } else {
         if (tab === "login") {
-          localStorage.setItem("token", data.token)
-          localStorage.setItem("username", data.user.username)
+          login(data.token, data.user.username)
           setSuccess("Login successful!")
           window.location.href = "/dashboard"
         } else {
